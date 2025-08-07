@@ -40,6 +40,7 @@
    cd flsk_0708
 
 2. Создайте виртуальное окружение и активируйте его:
+    ```bash
 	python3 -m venv .venv
 	source .venv/bin/activate
 	
