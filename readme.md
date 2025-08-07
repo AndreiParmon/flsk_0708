@@ -45,11 +45,12 @@
 	source .venv/bin/activate
 	
 3. Установите зависимости:
-    ```
+    ```bash
 	pip install --upgrade pip
 	pip install -r requirements.txt
 	
 4. Отредактируйте файл config.py в корне проекта и задайте все параметры:
+    ```
 	SQLALCHEMY_DATABASE_URI = "postgresql://<пользователь БД>:<пароль от БД>@localhost:5432/<название БД>"
 	#SQLALCHEMY_DATABASE_URI = "postgresql://test:pass@localhost:5432/testdb"
 	SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -58,6 +59,7 @@
 
 
 5. Задайте владельца папки для загрузок файлов:
+    ```bash
 	sudo chown -R $USER:$USER <путь до проекта>/uploads
 	#sudo chown -R $Andrei:$Andrei /home/andrei/flsk_0708/uploads
 
@@ -65,12 +67,16 @@
 ## Настройка базы данных и миграции
 
 1. Войдите в PostgreSQL и создайте пользователя и базу данных:
+    ```psql
 	CREATE USER <name user> WITH PASSWORD 'password';
 	CREATE DATABASE <name BD> OWNER <name user>;
 	
 2. Инициализируйте миграции (один раз):
+    ```bash
 	flask db init
+   
 3. Создайте миграцию и примените её:
+    ```bash
 	flask db migrate -m "Initial migration"
 	flask db upgrade
 
@@ -78,7 +84,8 @@
 
 ## Запуск Gunicorn через systemd
 
-Создайте файл /etc/systemd/system/flsk_0708.service:
+1. Создайте файл /etc/systemd/system/flsk_0708.service:
+    ```
 	[Unit]
 	Description=Gunicorn for Flask JSON App flsk_0708
 	After=network.target
@@ -98,7 +105,8 @@
 	WantedBy=multi-user.target
 
 
-После сохранения выполните:
+2. После сохранения выполните:
+    ```bash
 	sudo systemctl daemon-reload
 	sudo systemctl enable flsk_0708
 	sudo systemctl start flsk_0708
@@ -109,6 +117,7 @@
 ## Настройка Nginx
 
 1. Создайте файл /etc/nginx/sites-available/flsk_0708:
+    ```
 	upstream flask_app {
 		server 127.0.0.1:8000;
 	}
@@ -135,6 +144,7 @@
 	}
 
 2. Активируйте сайт и перезагрузите Nginx:
+    ```bash
 	sudo ln -s /etc/nginx/sites-available/flsk_0708 /etc/nginx/sites-enabled/
 	sudo nginx -t
 	sudo systemctl reload nginx
